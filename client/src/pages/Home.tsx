@@ -118,7 +118,8 @@ export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
-  const [formState, setFormState] = useState<"idle" | "submitting" | "success">("idle");
+  const [formState, setFormState] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [formError, setFormError] = useState("");
   const shouldReduceMotion = useReducedMotion();
   const { scrollYProgress: pageProgress } = useScroll();
   const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
@@ -164,11 +165,30 @@ export default function Home() {
 
   const closeMenu = () => setMenuOpen(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (formState === "submitting") return;
     setFormState("submitting");
-    window.setTimeout(() => setFormState("success"), 700);
+    setFormError("");
+
+    const formData = new FormData(event.currentTarget);
+    const inquiry = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("/api/inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inquiry),
+      });
+      const result: { error?: string } = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error || "We couldn't send your inquiry. Please try again shortly.");
+      }
+      setFormState("success");
+    } catch (error) {
+      setFormError(error instanceof Error ? error.message : "We couldn't send your inquiry. Please try again shortly.");
+      setFormState("error");
+    }
   };
 
   return (
@@ -338,7 +358,7 @@ export default function Home() {
         </motion.section>
 
         <motion.section className="contact-section section-reveal" id="contact" variants={sectionReveal} initial={sectionInitial} whileInView="visible" viewport={sectionViewport}>
-          <div className="wrap contact-grid"><div className="contact-copy"><h2>Tell us what you want to <em>share.</em></h2><p>Tell us about your content, audience, and goal. We will review the fit, recommend a practical first campaign, and explain what we would measure.</p><div className="contact-links"><a href="#contact"><MessageCircle size={18} /> WhatsApp conversation <ArrowUpRight size={15} /></a><a href="#contact"><Instagram size={18} /> Instagram conversation <ArrowUpRight size={15} /></a></div></div><div className="contact-form-wrap"><form className="contact-form" onSubmit={handleSubmit}><div className="form-kicker"><span>CAMPAIGN INQUIRY</span><span>ABOUT 3 MIN</span></div><div className="form-row"><label>Your name<input name="name" placeholder="Your name" required /></label><label>How should we contact you?<input name="contact" placeholder="Email, WhatsApp, or Instagram" required /></label></div><label>What content do you want to share?<select name="content" defaultValue=""><option value="" disabled>Select your content type</option><option>Podcast / interview</option><option>YouTube video / livestream</option><option>Education / coaching</option><option>Founder / brand content</option><option>Entertainment / event content</option><option>Something else</option></select></label><label>What would you like this campaign to do?<textarea name="details" placeholder="Tell us about your audience, goal, and what you want to learn." rows={4} required /></label><button className="button button-cobalt form-submit" type="submit" disabled={formState === "submitting"} aria-busy={formState === "submitting"}>{formState === "submitting" ? "Sending inquiry…" : formState === "success" ? "Thanks — we received your inquiry." : "Request a recommendation"} {formState === "submitting" ? <Loader2 className="form-spinner" size={17} aria-hidden="true" /> : formState === "success" ? <Check size={17} /> : <ArrowRight size={17} />}</button>{formState === "success" && <p className="form-success"><CircleCheck size={15} /> We’ll review your content and follow up with the next step.</p>}<p className="form-privacy">We’ll only use these details to respond to your campaign inquiry. We do not collect passwords or payment details here.</p></form></div></div>
+          <div className="wrap contact-grid"><div className="contact-copy"><h2>Tell us what you want to <em>share.</em></h2><p>Tell us about your content, audience, and goal. We will review the fit, recommend a practical first campaign, and explain what we would measure.</p><div className="contact-links"><a href="#contact"><MessageCircle size={18} /> WhatsApp conversation <ArrowUpRight size={15} /></a><a href="#contact"><Instagram size={18} /> Instagram conversation <ArrowUpRight size={15} /></a></div></div><div className="contact-form-wrap"><form className="contact-form" onSubmit={handleSubmit}><div className="form-kicker"><span>CAMPAIGN INQUIRY</span><span>ABOUT 3 MIN</span></div><div className="form-row"><label>Your name<input name="name" placeholder="Your name" required /></label><label>How should we contact you?<input name="contact" placeholder="Email, WhatsApp, or Instagram" required /></label></div><label>What content do you want to share?<select name="content" defaultValue=""><option value="" disabled>Select your content type</option><option>Podcast / interview</option><option>YouTube video / livestream</option><option>Education / coaching</option><option>Founder / brand content</option><option>Entertainment / event content</option><option>Something else</option></select></label><label>What would you like this campaign to do?<textarea name="details" placeholder="Tell us about your audience, goal, and what you want to learn." rows={4} required /></label><button className="button button-cobalt form-submit" type="submit" disabled={formState === "submitting"} aria-busy={formState === "submitting"}>{formState === "submitting" ? "Sending inquiry…" : formState === "success" ? "Thanks — we received your inquiry." : "Request a recommendation"} {formState === "submitting" ? <Loader2 className="form-spinner" size={17} aria-hidden="true" /> : formState === "success" ? <Check size={17} /> : <ArrowRight size={17} />}</button>{formState === "success" && <p className="form-success" role="status"><CircleCheck size={15} /> We’ll review your content and follow up with the next step.</p>}{formState === "error" && <p className="form-error" role="alert">{formError}</p>}<p className="form-privacy">We’ll only use these details to respond to your campaign inquiry. We do not collect passwords or payment details here.</p></form></div></div>
         </motion.section>
       </main>
 

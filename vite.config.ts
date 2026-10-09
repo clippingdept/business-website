@@ -1,10 +1,11 @@
-import { jsxLocPlugin } from "@builder.io/vite-plugin-jsx-loc";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import fs from "node:fs";
 import path from "node:path";
-import { defineConfig, type Plugin, type ViteDevServer } from "vite";
+import express from "express";
+import { defineConfig, loadEnv, type Plugin, type ViteDevServer } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
+import { createInquiryRouter } from "./server/inquiry";
 
 // =============================================================================
 // Manus Debug Collector - Vite Plugin
@@ -203,7 +204,24 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
+function vitePluginInquiryApi(): Plugin {
+  return {
+    name: "inquiry-api",
+    configureServer(server) {
+      const env = loadEnv(server.config.mode, server.config.envDir, "");
+      for (const name of ["RESEND_API", "BUSINESS_EMAIL"] as const) {
+        if (!process.env[name] && env[name]) {
+          process.env[name] = env[name];
+        }
+      }
+      const app = express();
+      app.use(createInquiryRouter());
+      server.middlewares.use(app);
+    },
+  };
+}
+
+const plugins = [react(), tailwindcss(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy(), vitePluginInquiryApi()];
 
 export default defineConfig({
   plugins,
