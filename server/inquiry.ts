@@ -41,11 +41,11 @@ function escapeHtml(value: string) {
   });
 }
 
-export function createInquiryRouter() {
+export function createInquiryRouter(routePaths = ["/api/inquiry"]) {
   const router = express.Router();
   router.use(express.json({ limit: "10kb" }));
 
-  router.post("/api/inquiry", async (req, res) => {
+  router.post(routePaths, async (req, res) => {
     if (!isInquiry(req.body)) {
       res.status(400).json({ error: "Please check your inquiry and try again." });
       return;
