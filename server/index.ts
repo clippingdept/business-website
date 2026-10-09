@@ -7,7 +7,7 @@ import { createInquiryRouter } from "./inquiry.js";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
-
+// fix
 async function startServer() {
   const app = express();
   const server = createServer(app);
