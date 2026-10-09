@@ -1,5 +1,6 @@
 import express from "express";
 import { createServer } from "http";
+import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { createInquiryRouter } from "./inquiry.js";
@@ -19,18 +20,44 @@ async function startServer() {
       ? path.resolve(dirname, "public")
       : path.resolve(dirname, "..", "dist", "public");
 
-  app.use(express.static(staticPath));
+app.use(express.static(staticPath));
 
-  // Handle client-side routing - serve index.html for all routes
-  app.get("*", (_req, res) => {
-    res.sendFile(path.join(staticPath, "index.html"));
-  });
+// Handle client-side routing - serve index.html for SPA routes
+app.get("*", (req, res) => {
+  // If request has a file extension that was not found by express.static, return 404 instead of index.html
+  if (req.path.includes(".") && !req.path.endsWith(".html")) {
+    res.status(404).end();
+    return;
+  }
 
-  const port = process.env.PORT || 3000;
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath, (err) => {
+      if (err && !res.headersSent) {
+        res.status(500).send("Error loading index.html");
+      }
+    });
+  } else {
+    res
+      .status(404)
+      .send("Frontend build not found. Please run 'npm run build' first.");
+  }
+});
+
+async function startServer() {
+  process.env.NODE_ENV = process.env.NODE_ENV || "production";
+  const port = Number(process.env.PORT) || 3000;
 
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
   });
 }
 
-startServer().catch(console.error);
+// In standalone environments, start the server; in Vercel/serverless environments, export app
+if (!process.env.VERCEL) {
+  startServer().catch(console.error);
+}
+
+export { app, server, startServer };
+export default app;
+
+
