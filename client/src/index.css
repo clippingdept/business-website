@@ -70,6 +70,7 @@
 .site-header.is-scrolled { color: #0b0d12; background: rgba(245, 243, 238, .92); backdrop-filter: blur(16px); box-shadow: 0 1px 0 rgba(11,13,18,.1); }
 .site-header.menu-open { color: #fff; background: rgba(11, 13, 18, .96); backdrop-filter: blur(16px); box-shadow: 0 1px 0 rgba(78,131,255,.28); }
 .brand { display: inline-flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+.brand-logo { display: block; width: 40px; height: auto; }
 .brand-mark { display: inline-flex; align-items: flex-end; gap: 3px; height: 21px; width: 21px; }
 .brand-mark span { display: block; width: 5px; background: currentColor; transform: skewX(-16deg); }
 .brand-mark span:nth-child(1) { height: 11px; opacity: .46; }
@@ -179,13 +180,12 @@
 .story-progress { position: absolute; top: 42px; left: 50%; display: flex; gap: 16px; transform: translateX(-50%); }
 .story-progress span { display: flex; align-items: center; gap: 7px; color: #555a66; font-size: 9px; font-weight: 700; letter-spacing: .1em; transition: color 180ms ease; }
 .story-progress span.active { color: #fff; }
-.story-stage { position: relative; min-height: 600px; display: grid; grid-template-columns: .85fr 1.15fr; gap: 4vw; align-items: center; transform-origin: 50% 50%; }
-.story-copy { position: relative; z-index: 4; min-height: 300px; }
-.story-state { position: absolute; left: 0; top: 50%; max-width: 390px; transform: translateY(-50%); }
-.story-state:not(:first-child) { opacity: 0; }
-.story-state h2 { margin: 0; color: #fff; font-size: clamp(3.4rem, 6vw, 6.6rem); line-height: .89; letter-spacing: -.09em; }
+.story-stage { position: relative; min-height: 600px; display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(2rem, 5vw, 5.5rem); align-items: center; transform-origin: 50% 50%; }
+.story-copy { position: relative; z-index: 4; width: min(100%, 620px); min-height: 300px; }
+.story-state { position: relative; width: min(100%, 620px); padding-right: 12px; }
+.story-state h2 { margin: 0; width: 100%; color: #fff; font-size: clamp(2.9rem, 5.2vw, 6.7rem); line-height: .89; letter-spacing: -.09em; }
 .story-state h2 em { color: #4e83ff; font-family: "DM Serif Display", Georgia, serif; font-weight: 400; letter-spacing: -.07em; }
-.story-state p { max-width: 330px; margin: 28px 0 0; color: #aeb4c1; font-size: 15px; line-height: 1.6; }
+.story-state p { max-width: 390px; margin: 28px 0 0; color: #aeb4c1; font-size: 15px; line-height: 1.6; }
 .story-media-wrap { position: relative; min-height: 520px; display: grid; place-items: center; }
 .story-media { position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,.2); background: linear-gradient(140deg, #13234a 0%, #2c63dd 52%, #f0a774 150%); box-shadow: 26px 30px 80px rgba(0,0,0,.28); will-change: transform, width, height, opacity; }
 .story-media-gradient { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(9,12,20,.18), transparent 42%, rgba(9,12,20,.72)); }

@@ -99,6 +99,45 @@ const faqs = [
   },
 ];
 
+const storyStates = [
+  {
+    headline: (
+      <>
+        One source.<br />
+        <em>More moments.</em>
+      </>
+    ),
+    paragraph: "We start with the long-form content you already have—podcasts, interviews, livestreams, and video libraries.",
+  },
+  {
+    headline: (
+      <>
+        Shape the best<br />
+        moments for the <em>feed.</em>
+      </>
+    ),
+    paragraph: "We turn the strongest parts of your source into short-form clips with the pacing, captions, and format social viewers expect.",
+  },
+  {
+    headline: (
+      <>
+        One clip.<br />
+        <em>More relevant accounts.</em>
+      </>
+    ),
+    paragraph: "We coordinate with selected accounts to publish the clips for their own audiences.",
+  },
+  {
+    headline: (
+      <>
+        See what happened<br />
+        after <em>publishing.</em>
+      </>
+    ),
+    paragraph: "We track the views from each account and show you which clips performed best and what to test next.",
+  },
+];
+
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut" as const } },
@@ -196,8 +235,7 @@ export default function Home() {
       <motion.div className="scroll-progress" style={{ scaleX: pageProgress }} aria-hidden="true" />
       <header className={`site-header ${scrolled ? "is-scrolled" : ""} ${menuOpen ? "menu-open" : ""}`}>
         <a className="brand" href="#top" aria-label="Clipping Department home">
-          <span className="brand-mark" aria-hidden="true"><span /><span /><span /></span>
-          <span className="brand-name">Clipping<br />Department</span>
+          <img src="/newlogo.svg" alt="Clipping Department" className="brand-logo" />
         </a>
         <nav className="desktop-nav" aria-label="Primary navigation">
           {navItems.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}
@@ -286,10 +324,19 @@ export default function Home() {
               </div>
               <motion.div className="story-stage" style={{ scale: shouldReduceMotion ? 1 : storyScale }}>
                 <div className="story-copy" aria-live="polite">
-                  <motion.div className="story-state state-content" style={{ opacity: shouldReduceMotion ? 1 : contentOpacity }}><h2>One source.<br /><em>More moments.</em></h2><p>We start with the long-form content you already have—podcasts, interviews, livestreams, and video libraries.</p></motion.div>
-                  <motion.div className="story-state state-clip" style={{ opacity: shouldReduceMotion ? 1 : clipOpacity }}><h2>Shape the best<br />moments for the <em>feed.</em></h2><p>We turn the strongest parts of your source into short-form clips with the pacing, captions, and format social viewers expect.</p></motion.div>
-                  <motion.div className="story-state state-distribute" style={{ opacity: shouldReduceMotion ? 1 : distributeOpacity }}><h2>One clip.<br /><em>More relevant accounts.</em></h2><p>We coordinate with selected accounts to publish the clips for their own audiences.</p></motion.div>
-                  <motion.div className="story-state state-reach" style={{ opacity: shouldReduceMotion ? 1 : reachOpacity }}><h2>See what happened<br />after <em>publishing.</em></h2><p>We track the views from each account and show you which clips performed best and what to test next.</p></motion.div>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeStory}
+                      className="story-state"
+                      initial={{ opacity: 0, y: 18 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -14 }}
+                      transition={{ duration: 0.35, ease: "easeOut" }}
+                    >
+                      <h2>{storyStates[activeStory].headline}</h2>
+                      <p>{storyStates[activeStory].paragraph}</p>
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
                 <div className="story-media-wrap">
                   <motion.div className="story-media landscape-media" style={{ width: shouldReduceMotion ? 520 : storyMediaWidth, height: shouldReduceMotion ? 292 : storyMediaHeight, borderRadius: shouldReduceMotion ? 3 : storyMediaRadius, x: shouldReduceMotion ? 0 : storyMediaX, y: shouldReduceMotion ? 0 : storyMediaY }}>
@@ -334,7 +381,7 @@ export default function Home() {
             <div className="trial-copy"><h2>Start with a <em>14-day trial.</em></h2><p>Start with a defined 14-day campaign before committing to ongoing work. You provide the approved source content and campaign goal; we handle the clipping, publishing coordination, tracking, and reporting. At the end, you can review what happened and decide whether continuing makes sense for you.</p><a className="button button-light" href="#contact">Discuss my trial <ArrowRight size={17} /></a></div>
             <div className="trial-package">
               <div className="package-top"><span>14-DAY TRIAL</span><span>FIXED SCOPE</span></div>
-              <div className="package-price">NPR <strong>50,000</strong></div>
+              <div className="package-price">NPR <strong>20,000</strong></div>
               <p className="package-note">Indicative starting price. Final scope and price are confirmed after we review your source content and campaign goal.</p>
               <ul>{["Up to 15 short-form clips", "Selected accounts prepared to publish the clips", "Clip editing, publishing coordination, tracking, and quality checks", "View checks using available platform data", "Mid-campaign update and final campaign report"].map((item) => <li key={item}><Check size={16} /> {item}</li>)}</ul>
               <div className="package-footer"><span>Content rights and takedown support included</span><ArrowUpRight size={18} /></div>
@@ -362,7 +409,7 @@ export default function Home() {
         </motion.section>
       </main>
 
-      <motion.footer className="site-footer section-reveal" variants={sectionReveal} initial={sectionInitial} whileInView="visible" viewport={sectionViewport}><div className="wrap footer-top"><a className="brand footer-brand" href="#top"><span className="brand-mark" aria-hidden="true"><span /><span /><span /></span><span className="brand-name">Clipping<br />Department</span></a><p>We turn existing content into tracked short-form campaigns for brands, creators, and businesses.</p><a className="footer-back" href="#top">Back to top <ArrowUpRight size={16} /></a></div><div className="wrap footer-bottom"><span>© 2026 Clipping Department.</span></div></motion.footer>
+      <motion.footer className="site-footer section-reveal" variants={sectionReveal} initial={sectionInitial} whileInView="visible" viewport={sectionViewport}><div className="wrap footer-top"><a className="brand footer-brand" href="#top"><img src="/newlogo.svg" alt="Clipping Department" className="brand-logo" /></a><p>We turn existing content into tracked short-form campaigns for brands, creators, and businesses.</p><a className="footer-back" href="#top">Back to top <ArrowUpRight size={16} /></a></div><div className="wrap footer-bottom"><span>© 2026 Clipping Department.</span></div></motion.footer>
     </div>
   );
 }
