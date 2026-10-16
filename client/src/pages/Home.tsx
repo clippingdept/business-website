@@ -264,7 +264,7 @@ export default function Home() {
           <div className="hero-grid-lines" aria-hidden="true" />
           <div className="hero-copy">
             <motion.h1 variants={fadeUp} initial="hidden" animate="visible" transition={{ delay: 0.08 }}>
-              Give your existing content more ways to be <em>found</em> with AI clipping and short-form video clip creation.
+              Give your existing content more ways to be <em>found</em>
             </motion.h1>
             <motion.p className="hero-lede" variants={fadeUp} initial="hidden" animate="visible" transition={{ delay: 0.16 }}>
               We turn podcasts, interviews, livestreams, and other approved long-form video into AI clipping campaigns, short-form content, and managed distribution through selected social accounts.
