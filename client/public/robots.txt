@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://clippingdepartment.com/sitemap.xml
+Sitemap: https://clippingdept.online/sitemap.xml
