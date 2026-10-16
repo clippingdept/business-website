@@ -235,7 +235,11 @@ export default function Home() {
       <motion.div className="scroll-progress" style={{ scaleX: pageProgress }} aria-hidden="true" />
       <header className={`site-header ${scrolled ? "is-scrolled" : ""} ${menuOpen ? "menu-open" : ""}`}>
         <a className="brand" href="#top" aria-label="Clipping Department home">
-          <img src="/newlogo.svg" alt="Clipping Department" className="brand-logo" />
+          <img src="/newlogo.svg" alt="Clipping Department" className="brand-logo" width={40} height={40} loading="eager" fetchPriority="high" />
+          <span className="brand-wordmark" aria-label="Clipping Department">
+            <span>Clipping</span>
+            <span>Department</span>
+          </span>
         </a>
         <nav className="desktop-nav" aria-label="Primary navigation">
           {navItems.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}
@@ -260,10 +264,10 @@ export default function Home() {
           <div className="hero-grid-lines" aria-hidden="true" />
           <div className="hero-copy">
             <motion.h1 variants={fadeUp} initial="hidden" animate="visible" transition={{ delay: 0.08 }}>
-              Give your existing content more ways to be <em>found.</em>
+              Give your existing content more ways to be <em>found</em> with AI clipping and short-form video clip creation.
             </motion.h1>
             <motion.p className="hero-lede" variants={fadeUp} initial="hidden" animate="visible" transition={{ delay: 0.16 }}>
-              We turn podcasts, interviews, livestreams, and other approved content into short clips, then coordinate distribution through selected social accounts.
+              We turn podcasts, interviews, livestreams, and other approved long-form video into AI clipping campaigns, short-form content, and managed distribution through selected social accounts.
             </motion.p>
             <motion.div className="hero-actions" variants={fadeUp} initial="hidden" animate="visible" transition={{ delay: 0.24 }}>
               <a className="button button-cobalt" href="#contact">Start a campaign <ArrowRight size={17} /></a>
@@ -409,7 +413,24 @@ export default function Home() {
         </motion.section>
       </main>
 
-      <motion.footer className="site-footer section-reveal" variants={sectionReveal} initial={sectionInitial} whileInView="visible" viewport={sectionViewport}><div className="wrap footer-top"><a className="brand footer-brand" href="#top"><img src="/newlogo.svg" alt="Clipping Department" className="brand-logo" /></a><p>We turn existing content into tracked short-form campaigns for brands, creators, and businesses.</p><a className="footer-back" href="#top">Back to top <ArrowUpRight size={16} /></a></div><div className="wrap footer-bottom"><span>© 2026 Clipping Department.</span></div></motion.footer>
+      <footer className="site-footer">
+        <div className="wrap footer-top">
+          <a className="brand footer-brand" href="#top" aria-label="Clipping Department home">
+            <img src="/newlogo.svg" alt="Clipping Department" className="brand-logo" width={40} height={40} loading="eager" fetchPriority="high" />
+            <span className="brand-wordmark" aria-label="Clipping Department">
+              <span>Clipping</span>
+              <span>Department</span>
+            </span>
+          </a>
+          <p>We turn existing content into tracked short-form campaigns for brands, creators, and businesses.</p>
+          <div className="footer-links">
+            <a className="footer-back" href="#top">Back to top <ArrowUpRight size={16} /></a>
+          </div>
+        </div>
+        <div className="wrap footer-bottom">
+          <span>© 2026 Clipping Department.</span>
+        </div>
+      </footer>
     </div>
   );
 }
