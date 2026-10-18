@@ -31,6 +31,17 @@ const navItems = [
   { label: "FAQ", href: "#faq" },
 ];
 
+function BrandLogo() {
+  return (
+    <svg className="brand-logo" width={40} height={40} viewBox="0 0 194 194" fill="none" aria-hidden="true">
+      <g filter="drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.05))">
+        <path d="M24.5 23H170.5L139.5 49.88H55.22V169.015L24.5 138V23Z" fill="#4E84FF" />
+        <path d="M73.96 168.96H120.04C147.61 168.96 169.96 146.61 169.96 119.04V49.999L139.24 76.499V119.04C139.24 129.644 130.644 138.24 120.04 138.24H73.96V168.96Z" fill="#4E84FF" />
+      </g>
+    </svg>
+  );
+}
+
 const processSteps = [
   {
     number: "01",
@@ -235,7 +246,7 @@ export default function Home() {
       <motion.div className="scroll-progress" style={{ scaleX: pageProgress }} aria-hidden="true" />
       <header className={`site-header ${scrolled ? "is-scrolled" : ""} ${menuOpen ? "menu-open" : ""}`}>
         <a className="brand" href="#top" aria-label="Clipping Department home">
-          <img src="/newlogo.svg" alt="Clipping Department" className="brand-logo" width={40} height={40} loading="eager" fetchPriority="high" />
+          <BrandLogo />
           <span className="brand-wordmark" aria-label="Clipping Department">
             <span>Clipping</span>
             <span>Department</span>
@@ -416,7 +427,7 @@ export default function Home() {
       <footer className="site-footer">
         <div className="wrap footer-top">
           <a className="brand footer-brand" href="#top" aria-label="Clipping Department home">
-            <img src="/newlogo.svg" alt="Clipping Department" className="brand-logo" width={40} height={40} loading="eager" fetchPriority="high" />
+            <BrandLogo />
             <span className="brand-wordmark" aria-label="Clipping Department">
               <span>Clipping</span>
               <span>Department</span>
